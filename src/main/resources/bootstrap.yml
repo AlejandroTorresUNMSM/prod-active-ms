@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: prod-active-ms-dev
+  cloud:
+    config:
+      uri: http://localhost:8888
+client:
+  ms:
+    url: http://localhost:8080/api/client
