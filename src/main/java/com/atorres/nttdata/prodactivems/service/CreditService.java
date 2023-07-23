@@ -5,6 +5,7 @@ import com.atorres.nttdata.prodactivems.exception.CustomException;
 import com.atorres.nttdata.prodactivems.model.CreditDto;
 import com.atorres.nttdata.prodactivems.model.RequestCredit;
 import com.atorres.nttdata.prodactivems.model.RequestUpdate;
+import com.atorres.nttdata.prodactivems.model.clientms.ClientDto;
 import com.atorres.nttdata.prodactivems.repository.CreditRepository;
 import com.atorres.nttdata.prodactivems.service.creditstrategy.CreditStrategy;
 import com.atorres.nttdata.prodactivems.service.creditstrategy.CreditStrategyFactory;
@@ -48,8 +49,7 @@ public class CreditService {
 	 */
 	public Mono<CreditDto> createCredit(String clientId, RequestCredit requestCredit) {
 		//obtenemos el cliente
-		return feignApiClient.getClient(clientId)
-						.single()
+		return verificandoDeudas(clientId)
 						.switchIfEmpty(Mono.error(new CustomException(HttpStatus.NOT_FOUND, "El cliente no existe")))
 						.flatMap(clientdao -> {
 							CreditDto cr = requestMapper.toDto(requestCredit,clientId);
@@ -61,6 +61,16 @@ public class CreditService {
 											: creditRepository.save(requestMapper.toDao(cr)));
 						})
 						.map(requestMapper::toDto);
+	}
+
+	private Mono<ClientDto> verificandoDeudas(String clientId){
+		return this.getDebt(clientId)
+						.flatMap(value -> {
+							if(Boolean.TRUE.equals(value))
+								return Mono.error(new CustomException(HttpStatus.CONFLICT, "Cliente tiene deudas vencidas"));
+							else
+								return feignApiClient.getClient(clientId).single();
+						});
 	}
 
 	/**
