@@ -1,14 +1,14 @@
 package com.atorres.nttdata.prodactivems.service.creditstrategy;
 
 import com.atorres.nttdata.prodactivems.exception.CustomException;
-import com.atorres.nttdata.prodactivems.model.dao.CreditDao;
+import com.atorres.nttdata.prodactivems.model.CreditDto;
 import org.springframework.http.HttpStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class PersonalCreditStrategy implements CreditStrategy{
     @Override
-    public Mono<Boolean> verifyCredit(Flux<CreditDao> listCredit) {
+    public Mono<Boolean> verifyCredit(Flux<CreditDto> listCredit) {
         return listCredit
                 .single()
                 .map(creditDao ->  creditDao.getBalance().doubleValue() <=1000)

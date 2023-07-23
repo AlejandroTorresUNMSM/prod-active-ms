@@ -1,6 +1,6 @@
 package com.atorres.nttdata.prodactivems.service.creditstrategy;
 
-import com.atorres.nttdata.prodactivems.utils.ClientType;
+import com.atorres.nttdata.prodactivems.model.clientms.ClientType;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
@@ -23,6 +23,8 @@ public class CreditStrategyFactory {
 
     private void initStrategies() {
         strategies.put(ClientType.PERSONAL, new PersonalCreditStrategy());
+        strategies.put(ClientType.VIP, new PersonalCreditStrategy());
         strategies.put(ClientType.BUSSINES, new BussinesCreditStrategy());
+        strategies.put(ClientType.MYPE, new BussinesCreditStrategy());
     }
 }

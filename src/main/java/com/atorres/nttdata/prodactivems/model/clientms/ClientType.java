@@ -1,4 +1,4 @@
-package com.atorres.nttdata.prodactivems.utils;
+package com.atorres.nttdata.prodactivems.model.clientms;
 
 public enum ClientType {
     PERSONAL,

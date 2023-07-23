@@ -10,11 +10,12 @@ import java.util.Date;
 
 @Data
 @Builder
-@Document("credit")
+@Document("credits")
 public class CreditDao {
     @Id
     private String id;
     private BigDecimal balance;
     private BigDecimal debt;
     private Date expirationDate;
+    private String client;
 }
