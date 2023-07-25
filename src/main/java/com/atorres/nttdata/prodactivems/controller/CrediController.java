@@ -20,6 +20,17 @@ public class CrediController {
     CreditService creditService;
 
     /**
+     * Metodo para traer un credito por su id
+     * @param creditId credito id
+     * @return creditodto
+     */
+    @GetMapping( value = "/{creditId}",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Mono<CreditDto> getCredit(@PathVariable String creditId){
+        return creditService.getCredit(creditId)
+                .doOnSuccess(v -> log.info("Credito encontrado: "+v.getId()));
+    }
+
+    /**
      * Endpoint para traer todos los creditos de un cliente
      * @param id id cliente
      * @return lista creditos

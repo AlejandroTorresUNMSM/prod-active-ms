@@ -41,6 +41,11 @@ public class CreditService {
 	@Autowired
 	private RequestMapper requestMapper;
 
+	public Mono<CreditDto> getCredit(String creditId){
+		return creditRepository.findById(creditId)
+						.map(requestMapper::toDto);
+	}
+
 	/**
 	 * Metodo que crea un credito
 	 * @param clientId id cliente
